@@ -301,7 +301,7 @@ function Table({ data, fetchData }) {
             </tbody>
           </TableWrapper>
           <Footer>
-            <Stack spacing={2}>
+            <Stack spacing={2} className="text-[#87CEEB]">
               <Pagination
                 count={10}
                 onChange={handleChange}
