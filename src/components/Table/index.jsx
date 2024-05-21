@@ -301,12 +301,13 @@ function Table({ data, fetchData }) {
             </tbody>
           </TableWrapper>
           <Footer>
-            <Stack spacing={2} className="text-[#87CEEB]">
+            <Stack spacing={2} style={{"color": "#87CEEB"}}>
               <Pagination
                 count={10}
                 onChange={handleChange}
+                style={{"color": "#87CEEB"}}
                 renderItem={(item) => (
-                  <PaginationS
+                  <PaginationS style={{"color": "#87CEEB" , "fontFamily" : "Montserrat"}}
                     {...item}
                   />
                 )}
