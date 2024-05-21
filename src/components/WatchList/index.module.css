@@ -1,0 +1,92 @@
+.container {
+    width: 511px;
+    height: 100vh;
+    height: 6000px !important;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    background-color: #515151;
+  }
+  .watchlist {
+    flex: 1;
+    width: 100%;
+    border-radius: 10px;
+    padding: 15px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    overflow-y: scroll;
+  }
+  .container h3 {
+    font-family: Roboto, sans-serif;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 24.5px;
+    letter-spacing: 0.40px;
+    text-align: center;
+    margin-bottom: 39px;
+  }
+  .cardWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 38px;
+  }
+  
+  .coinWrapper {
+    width: 198px;
+    border-radius: 25px;
+    background-color: #14161a;
+    text-align: center;
+    padding: 15px;
+  }
+  .coinWrapper p {
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20.02px;
+    letter-spacing: 0.15000000596046448px;
+    color: white;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+  .coinWrapper button {
+    width: 106px;
+    height: 30px;
+    background-color: #ff0000;
+    border: none;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20.02px;
+    letter-spacing: 0.15px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.5s;
+  }
+  .coinWrapper button:hover {
+    background-color: #cf0e0e;
+  }
+  
+  .button {
+    background-color: #87ceeb;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 4px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24.5px;
+    letter-spacing: 0.4px;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: pointer;
+    transition: all 0.5s linear;
+  }
+  .button:hover {
+    background-color: #3c8baa;
+  }
