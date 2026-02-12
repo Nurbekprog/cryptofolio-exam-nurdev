@@ -20,6 +20,11 @@ const Container = styled.div`
   background: rgba(22, 23, 26, 0.65);
   border: 1px solid rgba(135, 206, 235, 0.2);
   border-radius: 12px;
+
+  @media (max-width: 420px) {
+    min-height: 310px;
+    padding: 16px 8px;
+  }
 `;
 function Chart({id, days}) {
     const [type] = useContext(DataContext);

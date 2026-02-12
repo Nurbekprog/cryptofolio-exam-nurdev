@@ -29,6 +29,11 @@ const CarouselBackground = styled.div`
     min-height: 360px;
     padding: 44px 0 24px;
   }
+
+  @media (max-width: 420px) {
+    min-height: 330px;
+    padding: 34px 0 18px;
+  }
 `;
 const Title = styled.h2`
   position: relative;
@@ -41,6 +46,11 @@ const Title = styled.h2`
   color: #87ceeb;
   margin-bottom: 12px;
   padding: 0 16px;
+
+  @media (max-width: 420px) {
+    font-size: 26px;
+    line-height: 1.18;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -55,6 +65,11 @@ const Subtitle = styled.p`
   margin: 0 auto 28px;
   max-width: 720px;
   padding: 0 14px;
+
+  @media (max-width: 420px) {
+    margin-bottom: 18px;
+    line-height: 1.4;
+  }
 `;
 
 function Home() {

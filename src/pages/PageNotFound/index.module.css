@@ -43,6 +43,27 @@
     background-color: #8c7d7d;
     transition: all 0.2s;
   }
+
+  @media (max-width: 420px) {
+    .app {
+      font-size: 3.6rem;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .app .txt {
+      font-size: 1.05rem;
+      line-height: 1.4;
+      margin-bottom: 32px;
+    }
+
+    .backBtn {
+      width: 100%;
+      max-width: 220px;
+      padding: 12px 14px;
+      font-size: 0.8rem;
+    }
+  }
   
   @keyframes blink {
     0% {

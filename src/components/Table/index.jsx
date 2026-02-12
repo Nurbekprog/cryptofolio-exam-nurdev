@@ -25,6 +25,10 @@ const Title = styled.h2`
   text-align: center;
   margin-top: 18px;
   margin-bottom: 13px;
+
+  @media (max-width: 420px) {
+    font-size: 22px;
+  }
 `;
 
 const Search = styled.input`
@@ -36,6 +40,11 @@ const Search = styled.input`
   border-radius: 7px;
   margin-bottom: 20px;
   font-size: 15px;
+
+  @media (max-width: 420px) {
+    padding: 14px 12px;
+    font-size: 14px;
+  }
   &::placeholder {
     font-family: Roboto, sans-serif;
   }
@@ -46,6 +55,10 @@ const TableScroll = styled.div`
   overflow-x: auto;
   border: 1px solid #4a4c4f;
   border-radius: 8px;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const TableWrapper = styled.table`
@@ -171,6 +184,78 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   padding: 20px;
+
+  @media (max-width: 420px) {
+    padding: 14px 6px;
+  }
+`;
+
+const MobileList = styled.div`
+  display: none;
+
+  @media (max-width: 700px) {
+    display: grid;
+    gap: 10px;
+  }
+`;
+
+const MobileCard = styled.div`
+  background-color: #16171a;
+  border: 1px solid #4a4c4f;
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+`;
+
+const MobileHead = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+`;
+
+const MobileCoin = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  h3 {
+    font-size: 16px;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  p {
+    font-size: 12px;
+    color: #a9a9a9;
+    margin-top: 2px;
+  }
+`;
+
+const WatchIcon = styled.img`
+  width: 22px;
+  height: 22px;
+`;
+
+const MobileGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+`;
+
+const MobileCell = styled.div`
+  p {
+    font-size: 11px;
+    color: #8f9398;
+    margin-bottom: 4px;
+  }
+
+  strong {
+    font-size: 13px;
+    font-weight: 500;
+    word-break: break-word;
+  }
 `;
 
 function Table({ data, fetchData }) {
@@ -222,6 +307,69 @@ function Table({ data, fetchData }) {
             }}
             placeholder="Search For a Crypto Currency.."
           />
+          <MobileList>
+            {products &&
+              products.length > 0 &&
+              products
+                .filter((product) =>
+                  product.name.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((product) => {
+                  const percents = Number(
+                    product.price_change_percentage_24h
+                  ).toFixed(2);
+                  const isExist = storedData.some(
+                    (item) => item.id === product.id
+                  );
+
+                  return (
+                    <MobileCard
+                      key={`m-${product.id}`}
+                      onClick={() => handleNavigate(product.id, product)}
+                    >
+                      <MobileHead>
+                        <MobileCoin>
+                          <CoinImage src={product.image} alt={product.name} />
+                          <div>
+                            <h3>{product.symbol}</h3>
+                            <p>{product.name}</p>
+                          </div>
+                        </MobileCoin>
+                        <WatchIcon
+                          src={isExist ? viewed : unviewed}
+                          alt="watch icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/crypto/${product.id}`);
+                          }}
+                        />
+                      </MobileHead>
+                      <MobileGrid>
+                        <MobileCell>
+                          <p>Price</p>
+                          <strong>
+                            {currencyType(type)}{" "}
+                            {formatNumber(product.current_price.toFixed(2))}
+                          </strong>
+                        </MobileCell>
+                        <MobileCell>
+                          <p>24h</p>
+                          <strong style={{ color: percents > 0 ? "#0ECB81" : "#ff0000" }}>
+                            {percents > 0 ? `+${percents}%` : `${percents}%`}
+                          </strong>
+                        </MobileCell>
+                        <MobileCell>
+                          <p>Market Cap</p>
+                          <strong>
+                            {currencyType(type)}{" "}
+                            {formatNumber(product.market_cap.toString().slice(0, -6))}M
+                          </strong>
+                        </MobileCell>
+                      </MobileGrid>
+                    </MobileCard>
+                  );
+                })}
+          </MobileList>
           <TableScroll>
             <TableWrapper>
               <Thead>
@@ -307,10 +455,15 @@ function Table({ data, fetchData }) {
                 count={10}
                 page={page}
                 onChange={handleChange}
+                size="small"
+                siblingCount={0}
+                boundaryCount={1}
                 sx={{
                   "& .MuiPaginationItem-root": {
                     color: "#87ceeb",
                     fontFamily: "Montserrat",
+                    minWidth: { xs: 30, sm: 34 },
+                    height: { xs: 30, sm: 34 },
                   },
                   "& .Mui-selected": {
                     backgroundColor: "#3a3b3f !important",

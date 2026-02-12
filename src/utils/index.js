@@ -9,6 +9,10 @@ export const Container = styled.div`
   @media (max-width: 640px) {
     padding: 0 14px;
   }
+
+  @media (max-width: 420px) {
+    padding: 0 10px;
+  }
 `;
 
 export function currencyType(type) {

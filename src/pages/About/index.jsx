@@ -47,7 +47,7 @@ const DetailWrapper = styled.div`
 const DetailTitle = styled.h3`
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 700;
-  line-height: 56.02px;
+  line-height: 1.15;
   text-align: center;
   color: white;
   margin: 20px 0px;
@@ -63,6 +63,11 @@ const DetailDescription = styled.p`
   letter-spacing: 0.15000000596046448px;
   text-align: left;
   margin-bottom: 30px;
+
+  @media (max-width: 420px) {
+    font-size: 14px;
+    line-height: 1.6;
+  }
 `;
 const DetailText = styled.div`
   display: flex;
@@ -80,6 +85,19 @@ const DetailText = styled.div`
     text-align: left;
     letter-spacing: 2.5px;
     font-size: 18px;
+  }
+
+  @media (max-width: 420px) {
+    h3 {
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    span {
+      font-size: 15px;
+      line-height: 1.3;
+      letter-spacing: 0.3px;
+    }
   }
 `;
 const SelectPrice = styled.div`
@@ -103,6 +121,7 @@ const SelectPrice = styled.div`
     line-height: 1.3;
     text-align: center;
     cursor: pointer;
+    flex: 1 1 calc(50% - 6px);
   }
   input[type="radio"]:checked + label {
     background-color: #87ceeb;
@@ -156,7 +175,7 @@ function About() {
       ) : (
         <Wrapper>
           <DetailWrapper>
-            <img src={product?.image?.large} width={200} alt="" />
+            <img src={product?.image?.large} width={180} alt="" />
             <DetailTitle>{product?.name}</DetailTitle>
             <DetailDescription>{parse(`${description}`)}</DetailDescription>
             <DetailText>

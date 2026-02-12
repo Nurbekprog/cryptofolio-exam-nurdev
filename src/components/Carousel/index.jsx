@@ -51,6 +51,10 @@ const SliderItem = styled.div`
   img{
     margin: 6px auto;
   }
+
+  @media (max-width: 420px) {
+    min-height: 186px;
+  }
 `;
 
 const SliderTitle = styled.h4`
@@ -60,12 +64,17 @@ const SliderTitle = styled.h4`
     line-height: 18.75px;
     text-align: center;
     text-transform: uppercase;
-    span{
+	    span{
         margin-left: 7px;
         font-size: 14px;
         font-weight: 500;
         line-height: 20px;
         letter-spacing: 0.15px;
+	    }
+
+    @media (max-width: 420px) {
+      font-size: 14px;
+      line-height: 1.2;
     }
 `;
 
@@ -108,6 +117,14 @@ function Carousel({data}) {
               slidesToShow: 1,
             },
           },
+          {
+            breakpoint: 420,
+            settings: {
+              slidesToShow: 1,
+              centerMode: true,
+              centerPadding: "14px",
+            },
+          },
         ],
     };
 
@@ -138,7 +155,7 @@ function Carousel({data}) {
                             key={index}
                             onClick={() => handleNavigate(el.id, el)}
                             >
-                                <img width={80} height={80} src={el.image} alt="" />
+                                <img width={64} height={64} src={el.image} alt="" />
                                 <SliderTitle>
                                     {el.symbol}
                                     <span style={{color: percent >= 0 ? "#0ECB81" : "#ff0000"}}>

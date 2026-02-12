@@ -26,6 +26,10 @@ const Actions = styled.div`
   @media (max-width: 640px) {
     justify-content: space-between;
   }
+
+  @media (max-width: 360px) {
+    gap: 8px;
+  }
 `;
  
 const Logo = styled.h2`
