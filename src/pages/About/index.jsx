@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
@@ -11,20 +9,23 @@ import styled from "@emotion/styled";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 1880px;
+  max-width: 1280px;
   width: 100%;
   gap: 30px;
-  margin: 25px auto 50px;
-  @media screen and (max-width: 1400px) {
-    justify-content: space-between;
+  margin: 24px auto 50px;
+  padding: 0 20px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    padding: 0 14px;
   }
 `;
 
 const DetailWrapper = styled.div`
   border-right: 2px solid #808080;
   display: flex;
-  max-width: 25%;
-  width: 100%;
+  max-width: 360px;
+  width: 32%;
   min-height: 630px;
   height: auto;
   flex-direction: column;
@@ -32,10 +33,19 @@ const DetailWrapper = styled.div`
   img {
     margin: 0px auto;
   }
+
+  @media (max-width: 1024px) {
+    max-width: 100%;
+    width: 100%;
+    min-height: auto;
+    border-right: none;
+    border-bottom: 2px solid #808080;
+    padding: 0 0 24px;
+  }
 `;
 
 const DetailTitle = styled.h3`
-  font-size: 48px;
+  font-size: clamp(32px, 5vw, 48px);
   font-weight: 700;
   line-height: 56.02px;
   text-align: center;
@@ -57,6 +67,7 @@ const DetailDescription = styled.p`
 const DetailText = styled.div`
   display: flex;
   gap: 7px;
+  flex-wrap: wrap;
   h3 {
     font-size: 20px;
     font-weight: 700;
@@ -72,36 +83,38 @@ const DetailText = styled.div`
   }
 `;
 const SelectPrice = styled.div`
-  width: 73%;
+  width: 100%;
   display: flex;
-  gap: 38px;
+  gap: 12px;
+  flex-wrap: wrap;
   input {
     display: none;
   }
   label {
     display: inline-block;
-    padding: 11px 21px;
-    width: 220px;
+    padding: 11px 16px;
+    min-width: 120px;
     border: 1px solid #87ceeb;
-    height: 41px;
+    height: auto;
     border-radius: 6px;
     font-family: Montserrat;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    line-height: 19.5px;
-    text-align: left;
+    line-height: 1.3;
+    text-align: center;
     cursor: pointer;
   }
   input[type="radio"]:checked + label {
     background-color: #87ceeb;
     color: black;
-    font-family: 700;
+    font-weight: 700;
   }
 `;
 const ColumnWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex: 1;
 `;
 
 function About() {
@@ -109,10 +122,9 @@ function About() {
   const [product, setProduct] = useState({});
   const [time, setTime] = useState("24");
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useContext(DataContext);
+  const [type] = useContext(DataContext);
   const { id } = useParams();
   const currency = type.toLowerCase();
-  console.log(product);
 
   useEffect(() => {
     if (id) {
@@ -131,9 +143,11 @@ function About() {
     } else {
       navigate("/");
     }
-  }, []);
+  }, [id, navigate]);
 
-  let description = String(product?.description?.en).split(".")[0];
+  const description = product?.description?.en
+    ? String(product.description.en).split(".")[0]
+    : "No description available.";
 
   return (
     <>
@@ -161,7 +175,7 @@ function About() {
               <h3> Market Cap:</h3>
               <span>
                 {currencyType(type)}
-                {formatNumber(product.market_data?.market_cap[currency])}
+                {formatNumber(product?.market_data?.market_cap?.[currency])}
               </span>
             </DetailText>
           </DetailWrapper>

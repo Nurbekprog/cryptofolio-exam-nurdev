@@ -1,46 +1,68 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled"
 import Carousel from "../../components/Carousel"
 import carouselBg from "../../assets/images/bgImage.jpg"
 import Table from "../../components/Table"
 import Loader from "../../components/Loader"
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, useCallback } from "react"
 import { DataContext } from "../../context/DataContext"
 
 const CarouselBackground = styled.div`
+  position: relative;
   background-image: url(${carouselBg});
   background-size: cover;
   background-position: center;
-  height: 400px;
+  min-height: 430px;
+  padding: 70px 0 45px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(15, 16, 20, 0.5) 0%,
+      rgba(15, 16, 20, 0.88) 100%
+    );
+  }
+
+  @media (max-width: 640px) {
+    min-height: 360px;
+    padding: 44px 0 24px;
+  }
 `;
 const Title = styled.h2`
-  font-size: 60px;
+  position: relative;
+  z-index: 1;
+  font-size: clamp(28px, 6vw, 62px);
   font-weight: 700;
-  line-height: 72px;
+  line-height: 1.1;
   letter-spacing: -0.5px;
   text-align: center;
   color: #87ceeb;
-  margin-bottom: 10px;
-  padding-top: 69px;
+  margin-bottom: 12px;
+  padding: 0 16px;
 `;
 
 const Subtitle = styled.p`
-  font-size: 14px;
+  position: relative;
+  z-index: 1;
+  font-size: clamp(13px, 2vw, 15px);
   font-weight: 500;
-  line-height: 21.98px;
+  line-height: 1.6;
   letter-spacing: 0.10px;
   text-align: center;
   color: #a9a9a9;
-  margin-bottom: 40px;
+  margin: 0 auto 28px;
+  max-width: 720px;
+  padding: 0 14px;
 `;
 
 function Home() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [type, setType, watch, setWatch] = useContext(DataContext);
+    const [type] = useContext(DataContext);
 
-    async function getData(page = 1) {
+    const getData = useCallback(async (page = 1) => {
         setLoading(true);
         try {
           const response = await fetch(
@@ -53,11 +75,11 @@ function Home() {
         } finally {
           setLoading(false);
         }
-      }
+      }, [type]);
 
       useEffect(() => {
         getData();
-      }, [type]);
+      }, [getData]);
 
    return (
     <>

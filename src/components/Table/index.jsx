@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import styled from "@emotion/styled";
 import { Container, formatNumber, currencyType } from "../../utils";
@@ -7,17 +6,21 @@ import unviewed from "../../assets/images/unviewed.svg";
 import { useContext, useState, useEffect } from "react";
 import { DataContext } from "../../context/DataContext";
 import { useNavigate } from "react-router-dom";
-import { Pagination, Stack, PaginationItem} from "@mui/material";
+import { Pagination, Stack } from "@mui/material";
 
 const Wrapper = styled.div`
   padding: 0px 24px;
   margin-bottom: 20px;
+
+  @media (max-width: 640px) {
+    padding: 0;
+  }
 `;
 
 const Title = styled.h2`
-  font-size: 34px;
+  font-size: clamp(25px, 4vw, 34px);
   font-weight: 400;
-  line-height: 42px;
+  line-height: 1.2;
   letter-spacing: 0.25px;
   text-align: center;
   margin-top: 18px;
@@ -27,19 +30,28 @@ const Title = styled.h2`
 const Search = styled.input`
   color: #ffffff;
   width: 100%;
-  padding: 25px 14px 20px;
+  padding: 18px 14px;
   background-color: transparent;
   border: 1px solid #4a4c4f;
   border-radius: 7px;
   margin-bottom: 20px;
+  font-size: 15px;
   &::placeholder {
     font-family: Roboto, sans-serif;
   }
 `;
 
+const TableScroll = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #4a4c4f;
+  border-radius: 8px;
+`;
+
 const TableWrapper = styled.table`
   border-collapse: collapse;
   width: 100%;
+  min-width: 760px;
 `;
 
 const Thead = styled.thead`
@@ -120,6 +132,16 @@ const TableInfo = styled.div`
   }
 `;
 
+const CoinImage = styled.img`
+  width: 50px;
+  height: 50px;
+
+  @media (max-width: 640px) {
+    width: 40px;
+    height: 40px;
+  }
+`;
+
 const TablePrice = styled.td`
   font-size: 14px;
   font-weight: 400;
@@ -151,32 +173,12 @@ const Footer = styled.div`
   padding: 20px;
 `;
 
-const PaginationS = styled(PaginationItem)`
-  color: #ffffff;
-  && {
-    background-color: ${(props) => {
-      let page = 1;
-      if (localStorage.getItem("page")) {
-        page = localStorage.getItem("page");
-      }
-
-      if (page == props.page) {
-        props.selected = true;
-      } else {
-        props.selected = false;
-      }
-      return props.selected ? "#3A3B3F" : "inherit";
-    }};
-  }
-`;
-
 function Table({ data, fetchData }) {
   const products = data;
   const navigate = useNavigate();
-  const [type, setType, watch, setWatch] = useContext(DataContext);
+  const [type, , watch, setWatch] = useContext(DataContext);
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(null);
-  console.log("page", page);
+  const [page, setPage] = useState(1);
   let storedData = watch;
   function handleNavigate(elID, el) {
     if (elID) {
@@ -194,16 +196,14 @@ function Table({ data, fetchData }) {
   }
 
   useEffect(() => {
-    if (localStorage.getItem("page")) {
-      console.log(localStorage.getItem("page"));
-      setPage(localStorage.getItem("page"));
-    } else {
-      setPage(1);
+    const storedPage = Number(localStorage.getItem("page"));
+    if (storedPage) {
+      setPage(storedPage);
+      fetchData(storedPage);
     }
-  }, []);
+  }, [fetchData]);
 
-  function handleChange(event, value) {
-    console.log(206, value);
+  function handleChange(_, value) {
     setPage(value);
     localStorage.setItem("page", value);
     fetchData(value);
@@ -218,99 +218,105 @@ function Table({ data, fetchData }) {
             type="text"
             value={search}
             onChange={(e) => {
-              e.preventDefault();
               setSearch(e.target.value);
             }}
             placeholder="Search For a Crypto Currency.."
           />
-          <TableWrapper>
-            <Thead>
-              <tr>
-                <TableHead>Coin</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>24h Changes</TableHead>
-                <TableHead>Market Cap</TableHead>
-              </tr>
-            </Thead>
-            <tbody>
-              {products &&
-                products.length > 0 &&
-                products
-                  .filter((product) =>
-                    product.name.toLowerCase().includes(search.toLowerCase())
-                  )
-                  .map((product, index) => {
-                    let percents = Number(
-                      product.price_change_percentage_24h
-                    ).toFixed(2);
-                    const isExist = storedData.some(
-                      (item) => item.id === product.id
-                    );
-                    return (
-                      <TableRow
-                        key={index}
-                        onClick={() => {
-                          handleNavigate(product.id, product);
-                        }}
-                      >
-                        <TableData>
-                          <TableInfo>
-                            <img
-                              src={product.image}
-                              alt={product.name}
-                              width={50}
-                            />
-                            <div>
-                              <h3>{product.symbol}</h3>
-                              <p>{product.name}</p>
-                            </div>
-                          </TableInfo>
-                        </TableData>
-                        <TablePrice>
-                          {currencyType(type)}{" "}
-                          {formatNumber(product.current_price.toFixed(2))}
-                        </TablePrice>
-                        <td>
-                          <TablePercents>
-                            <img
-                              src={isExist ? viewed : unviewed}
-                              width={27}
-                              onClick={() => {
-                                navigate(`/crypto/${product.id}`);
-                              }}
-                            />
-                            <p>
-                              {percents > 0 ? (
-                                <span style={{ color: "#0ECB81" }}>+{percents}%</span>
-                              ) : (
-                                <span style={{ color: "#ff0000" }}>{percents}%</span>
-                              )}
-                            </p>
-                          </TablePercents>
-                        </td>
-                        <TablePrice>
-                          {currencyType(type)}{" "}
-                          {formatNumber(
-                            product.market_cap.toString().slice(0, -6)
-                          )}
-                          M
-                        </TablePrice>
-                      </TableRow>
-                    );
-                  })}
-            </tbody>
-          </TableWrapper>
+          <TableScroll>
+            <TableWrapper>
+              <Thead>
+                <tr>
+                  <TableHead>Coin</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>24h Changes</TableHead>
+                  <TableHead>Market Cap</TableHead>
+                </tr>
+              </Thead>
+              <tbody>
+                {products &&
+                  products.length > 0 &&
+                  products
+                    .filter((product) =>
+                      product.name.toLowerCase().includes(search.toLowerCase())
+                    )
+                    .map((product) => {
+                      let percents = Number(
+                        product.price_change_percentage_24h
+                      ).toFixed(2);
+                      const isExist = storedData.some(
+                        (item) => item.id === product.id
+                      );
+                      return (
+                        <TableRow
+                          key={product.id}
+                          onClick={() => {
+                            handleNavigate(product.id, product);
+                          }}
+                        >
+                          <TableData>
+                            <TableInfo>
+                              <CoinImage
+                                src={product.image}
+                                alt={product.name}
+                              />
+                              <div>
+                                <h3>{product.symbol}</h3>
+                                <p>{product.name}</p>
+                              </div>
+                            </TableInfo>
+                          </TableData>
+                          <TablePrice>
+                            {currencyType(type)}{" "}
+                            {formatNumber(product.current_price.toFixed(2))}
+                          </TablePrice>
+                          <td>
+                            <TablePercents>
+                              <img
+                                src={isExist ? viewed : unviewed}
+                                width={27}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/crypto/${product.id}`);
+                                }}
+                              />
+                              <p>
+                                {percents > 0 ? (
+                                  <span style={{ color: "#0ECB81" }}>+{percents}%</span>
+                                ) : (
+                                  <span style={{ color: "#ff0000" }}>{percents}%</span>
+                                )}
+                              </p>
+                            </TablePercents>
+                          </td>
+                          <TablePrice>
+                            {currencyType(type)}{" "}
+                            {formatNumber(
+                              product.market_cap.toString().slice(0, -6)
+                            )}
+                            M
+                          </TablePrice>
+                        </TableRow>
+                      );
+                    })}
+              </tbody>
+            </TableWrapper>
+          </TableScroll>
           <Footer>
-            <Stack spacing={2} style={{"color": "#87CEEB"}}>
+            <Stack spacing={2}>
               <Pagination
                 count={10}
+                page={page}
                 onChange={handleChange}
-                style={{"color": "#87CEEB"}}
-                renderItem={(item) => (
-                  <PaginationS style={{"color": "#87CEEB" , "fontFamily" : "Montserrat"}}
-                    {...item}
-                  />
-                )}
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "#87ceeb",
+                    fontFamily: "Montserrat",
+                  },
+                  "& .Mui-selected": {
+                    backgroundColor: "#3a3b3f !important",
+                    color: "#fff !important",
+                  },
+                }}
               />
             </Stack>
           </Footer>

@@ -4,6 +4,11 @@ export const Container = styled.div`
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
+  padding: 0 20px;
+
+  @media (max-width: 640px) {
+    padding: 0 14px;
+  }
 `;
 
 export function currencyType(type) {
@@ -25,7 +30,7 @@ export const radioButtons = [
 
 
 export function formatNumber(number) {
-    if (!number) return null; 
+    if (number === null || number === undefined) return null; 
   
     const parts = number.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");

@@ -1,15 +1,14 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import { Drawer } from "@mui/material";
 import styles from "./index.module.css";
 import { DataContext } from "../../context/DataContext";
-import { formatNumber } from "../../utils";
+import { currencyType, formatNumber } from "../../utils";
 
 function WatchList() {
   const [state, setState] = useState({
     right: false,
   });
-  const [type, setType, watch, setWatch] = useContext(DataContext);
+  const [type, , watch, setWatch] = useContext(DataContext);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -41,6 +40,13 @@ function WatchList() {
             anchor={anchor}
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
+            PaperProps={{
+              sx: {
+                width: { xs: "100%", sm: 420, md: 500 },
+                maxWidth: "100%",
+                backgroundColor: "#515151",
+              },
+            }}
           >
             <div className={styles.container}>
               <h3>WATCHLIST</h3>
@@ -50,7 +56,10 @@ function WatchList() {
                     return (
                       <div key={index} className={styles.coinWrapper}>
                         <img src={el.image} width={118} height={118} alt="" />
-                        <p>${formatNumber(el.current_price)}</p>
+                        <p>
+                          {currencyType(type)}
+                          {formatNumber(el.current_price)}
+                        </p>
                         <button
                           onClick={() => {
                             removeItem(index);

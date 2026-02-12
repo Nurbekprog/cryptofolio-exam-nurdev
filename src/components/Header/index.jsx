@@ -5,25 +5,36 @@ import CurrencySelect from '../CurrencySelect'
 import styled from '@emotion/styled'
 
 const HeaderWrapper = styled.div`
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 12px 0;
-          `;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+`;
 
 const Actions = styled.div`
   display: flex;
   align-items: center;
-  gap: 15px;
+  justify-content: flex-end;
+  gap: 12px;
+
+  @media (max-width: 640px) {
+    justify-content: space-between;
+  }
 `;
  
 const Logo = styled.h2`
-font-size: 20px;
-font-weight: 700;
-line-height: 32px;
-letter-spacing: 0.15px;
-color: #87ceeb;
-cursor: pointer;
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.15px;
+  color: #87ceeb;
+  cursor: pointer;
 `
 
 function Header() {

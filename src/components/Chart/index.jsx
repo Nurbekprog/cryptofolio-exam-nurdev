@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext} from "react";
+import { useCallback } from "react";
 import {Line} from "react-chartjs-2";
 import "chart.js/auto"
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -10,17 +9,20 @@ import Loader from "../Loader";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
-max-width: 1292px;
-width: 100%;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-margin-top: 25;
-padding: 40px;
+  width: 100%;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 24px 12px;
+  background: rgba(22, 23, 26, 0.65);
+  border: 1px solid rgba(135, 206, 235, 0.2);
+  border-radius: 12px;
 `;
 function Chart({id, days}) {
-    const [type, setType] = useContext(DataContext);
+    const [type] = useContext(DataContext);
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -29,11 +31,11 @@ function Chart({id, days}) {
             primary: {
                 main: "#ffffff",
             },
-            type: "dark",
+            mode: "dark",
         },
     });
 
-    async function getData() {
+    const getData = useCallback(async () => {
         setLoading(true);
         try {
             const response = await fetch(
@@ -45,11 +47,11 @@ function Chart({id, days}) {
         }finally {
             setLoading(false);
         }
-    }
+    }, [days, id, type]);
 
     useEffect(() => {
         getData();
-    }, [days]);
+    }, [getData]);
 
    
   return (
@@ -66,7 +68,7 @@ function Chart({id, days}) {
                             let time = date.getHours() > 12
                             ? `${date.getHours() - 12} : ${date.getMinutes()} PM`
                             : `${date.getHours()} : ${date.getMinutes()}AM`;
-                            return days === 1 ? time : date.toLocaleDateString();
+                            return days === "24" ? time : date.toLocaleDateString();
                         }),
                         datasets: [
                             {
@@ -77,11 +79,14 @@ function Chart({id, days}) {
                         ]
                        }}
                        options={{
+                       responsive: true,
+                       maintainAspectRatio: false,
                        elements: {
                        point: {
                        radius: 1,
                        }
                        }}}
+                       height={320}
                        />
                 )
             }

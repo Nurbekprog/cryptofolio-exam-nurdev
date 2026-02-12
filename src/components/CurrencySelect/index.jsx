@@ -11,7 +11,10 @@ function CurrencySelect() {
   const [type, setType] = useContext(DataContext);
   return (
     <ThemeProvider theme={darkTheme}>
-      <Select style={{width: "85px", height: "40px"}} value={type} onChange={(e) => setType(e.target.value)}
+      <Select
+      sx={{ width: { xs: 96, sm: 95 }, height: 40 }}
+      value={type}
+      onChange={(e) => setType(e.target.value)}
       variant="outlined"
       labelId="demo-simple-select-label"
       id="demo-simple-select">

@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -18,24 +17,40 @@ const Wrapper = styled.div`
 `;
 
 const SliderS = styled(Slider)`
-    display: flex;
-    justify-content: space-around;
-    padding-left: 150px;
+  .slick-list {
+    margin: 0 -8px;
+  }
+
+  .slick-slide > div {
+    padding: 0 8px;
+  }
 `;
 
 const SliderItem = styled.div`
-    outline: none;
-    max-width: 140px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    cursor: pointer;
-     img{
-        margin: 10px auto;
-     }
+  outline: none;
+  min-height: 210px;
+  border-radius: 14px;
+  background: rgba(22, 23, 28, 0.65);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid rgba(135, 206, 235, 0.2);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(135, 206, 235, 0.5);
+  }
+
+  img{
+    margin: 6px auto;
+  }
 `;
 
 const SliderTitle = styled.h4`
@@ -55,17 +70,16 @@ const SliderTitle = styled.h4`
 `;
 
 const SliderPrice = styled.p`
-font-family: Roboto, sans-serif;
-font-size: 22px;
-font-weight:500;
-line-height: 25.6px;
-text-align: center;
+  font-family: Roboto, sans-serif;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight:500;
+  line-height: 1.2;
+  text-align: center;
 `
 
-// eslint-disable-next-line react/prop-types
 function Carousel({data}) {
     const navigate = useNavigate();
-    const [type, setType] = useContext(DataContext)
+    const [type] = useContext(DataContext)
 
     const settings = {
         dots: false,
@@ -75,6 +89,26 @@ function Carousel({data}) {
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 2000,
+        responsive: [
+          {
+            breakpoint: 1200,
+            settings: {
+              slidesToShow: 3,
+            },
+          },
+          {
+            breakpoint: 900,
+            settings: {
+              slidesToShow: 2,
+            },
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 1,
+            },
+          },
+        ],
     };
 
      function handleNavigate(elID, el) {
