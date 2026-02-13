@@ -8,53 +8,65 @@ import { DataContext } from "../../context/DataContext";
 import { useNavigate } from "react-router-dom";
 import { Pagination, Stack } from "@mui/material";
 
-const Wrapper = styled.div`
-  padding: 0px 24px;
-  margin-bottom: 20px;
 
+const Wrapper = styled.div`
+  max-width: 1280px;
+  margin: 0 auto 40px;
+  padding: 0 24px;
+  
   @media (max-width: 640px) {
-    padding: 0;
+    padding: 0 16px;
   }
 `;
 
 const Title = styled.h2`
-  font-size: clamp(25px, 4vw, 34px);
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: 0.25px;
+  font-family: var(--font-family-primary);
+  font-size: 32px;
+  font-weight: 700;
   text-align: center;
-  margin-top: 18px;
-  margin-bottom: 13px;
-
-  @media (max-width: 420px) {
-    font-size: 22px;
+  margin: 40px 0 32px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  
+  @media (max-width: 640px) {
+    font-size: 24px;
+    margin: 32px 0 24px;
   }
 `;
 
 const Search = styled.input`
-  color: #ffffff;
   width: 100%;
-  padding: 18px 14px;
-  background-color: transparent;
-  border: 1px solid #4a4c4f;
-  border-radius: 7px;
-  margin-bottom: 20px;
-  font-size: 15px;
+  padding: 16px 20px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-bottom: 32px;
+  font-size: 16px;
+  font-family: var(--font-family-secondary);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 
-  @media (max-width: 420px) {
-    padding: 14px 12px;
-    font-size: 14px;
+  &:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(252, 213, 53, 0.1); /* Gold glow match */
+    background-color: #1a2028;
   }
+
   &::placeholder {
-    font-family: Roboto, sans-serif;
+    color: var(--text-secondary);
   }
 `;
 
 const TableScroll = styled.div`
   width: 100%;
   overflow-x: auto;
-  border: 1px solid #4a4c4f;
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-md);
 
   @media (max-width: 700px) {
     display: none;
@@ -64,197 +76,201 @@ const TableScroll = styled.div`
 const TableWrapper = styled.table`
   border-collapse: collapse;
   width: 100%;
-  min-width: 760px;
+  min-width: 800px;
 `;
 
 const Thead = styled.thead`
-  background-color: #87ceeb;
-  border-radius: 15px;
-  & tr {
-    border-radius: 10px;
-    font-size: 14px;
+  background-color: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border-color);
+  
+  & tr th {
+    color: var(--accent-color);
+    font-family: var(--font-family-primary);
     font-weight: 700;
-    line-height: 24px;
-    letter-spacing: 0.15px;
-    color: black;
-    & th:nth-of-type(1) {
-      padding-left: 18px;
-      width: 25%;
-      border-top-left-radius: 7px;
+    font-size: 14px;
+    padding: 20px 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: right;
+    
+    &:first-of-type {
       text-align: left;
-    }
-    & th:nth-of-type(2) {
-      width: 20%;
-      text-align: right;
-    }
-    & th:nth-of-type(3) {
-      width: 22%;
-      text-align: center;
-    }
-    & th:nth-of-type(4) {
-      padding-right: 16px;
-      width: 13%;
-      text-align: right;
-      border-top-right-radius: 7px;
     }
   }
 `;
 
 const TableHead = styled.th`
-  padding: 19px 0px;
   border: none;
 `;
+
 const TableRow = styled.tr`
   cursor: pointer;
-  border-bottom: 1px solid #4a4c4f;
-  background-color: #16171a;
-  & td:nth-of-type(2) {
-    text-align: right;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(252, 213, 53, 0.03); /* Subtle accent tint */
   }
-  & td:nth-of-type(3) {
-    text-align: center;
-  }
-  & td:nth-of-type(4) {
-    text-align: right;
-    padding-right: 16px;
+
+  &:last-of-type {
+    border-bottom: none;
   }
 `;
 
 const TableData = styled.td`
-  padding: 16px 16px 27px;
+  padding: 20px 24px;
+  color: var(--text-primary);
+  font-family: var(--font-family-secondary);
+  font-size: 15px;
+  font-weight: 500;
 `;
 
 const TableInfo = styled.div`
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
+  
   & div h3 {
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 31.46px;
-    letter-spacing: 0.15px;
+    font-size: 18px;
+    font-weight: 700;
     text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 4px;
   }
+  
   & p {
-    font-family: Roboto, sans-serif;
     font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    letter-spacing: 0.15px;
-    color: #a9a9a9;
+    color: var(--text-secondary);
   }
 `;
 
 const CoinImage = styled.img`
-  width: 50px;
-  height: 50px;
-
-  @media (max-width: 640px) {
-    width: 40px;
-    height: 40px;
-  }
+  width: 44px;
+  height: 44px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 `;
 
 const TablePrice = styled.td`
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20.02px;
-  letter-spacing: 0.15px;
+  font-size: 15px;
+  font-weight: 600;
   text-align: right;
+  padding: 20px 24px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
 `;
 
 const TablePercents = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 15px;
+  justify-content: flex-end;
+  gap: 8px;
 
-  img {
-    cursor: pointer;
-  }
   p {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20.02px;
-    letter-spacing: 0.15px;
-    text-align: right;
+    font-weight: 600;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
   }
 `;
+
 const Footer = styled.div`
   display: flex;
   justify-content: center;
-  padding: 20px;
-
-  @media (max-width: 420px) {
-    padding: 14px 6px;
-  }
+  padding: 32px 0;
 `;
 
 const MobileList = styled.div`
   display: none;
 
   @media (max-width: 700px) {
-    display: grid;
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 `;
 
 const MobileCard = styled.div`
-  background-color: #16171a;
-  border: 1px solid #4a4c4f;
-  border-radius: 10px;
-  padding: 12px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+  
+  &:active {
+    transform: scale(0.98);
+  }
 `;
 
 const MobileHead = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
 `;
 
 const MobileCoin = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 
   h3 {
-    font-size: 16px;
-    line-height: 1.1;
+    font-size: 18px;
+    font-weight: 700;
     text-transform: uppercase;
+    color: var(--text-primary);
   }
 
   p {
-    font-size: 12px;
-    color: #a9a9a9;
-    margin-top: 2px;
+    font-size: 14px;
+    color: var(--text-secondary);
   }
 `;
 
 const WatchIcon = styled.img`
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  
+  &:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 `;
 
 const MobileGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 10px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 `;
 
 const MobileCell = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
   p {
-    font-size: 11px;
-    color: #8f9398;
-    margin-bottom: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 600;
   }
 
   strong {
-    font-size: 13px;
-    font-weight: 500;
-    word-break: break-word;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  &:nth-of-type(2) {
+    text-align: center;
+  }
+  &:last-of-type {
+    text-align: right;
   }
 `;
 
@@ -354,7 +370,7 @@ function Table({ data, fetchData }) {
                         </MobileCell>
                         <MobileCell>
                           <p>24h</p>
-                          <strong style={{ color: percents > 0 ? "#0ECB81" : "#ff0000" }}>
+                          <strong style={{ color: percents > 0 ? "var(--success-color)" : "var(--error-color)" }}>
                             {percents > 0 ? `+${percents}%` : `${percents}%`}
                           </strong>
                         </MobileCell>
@@ -417,11 +433,11 @@ function Table({ data, fetchData }) {
                             {currencyType(type)}{" "}
                             {formatNumber(product.current_price.toFixed(2))}
                           </TablePrice>
-                          <td>
+                          <TableData>
                             <TablePercents>
                               <img
                                 src={isExist ? viewed : unviewed}
-                                width={27}
+                                width={24}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   navigate(`/crypto/${product.id}`);
@@ -429,13 +445,13 @@ function Table({ data, fetchData }) {
                               />
                               <p>
                                 {percents > 0 ? (
-                                  <span style={{ color: "#0ECB81" }}>+{percents}%</span>
+                                  <span style={{ color: "var(--success-color)" }}>+{percents}%</span>
                                 ) : (
-                                  <span style={{ color: "#ff0000" }}>{percents}%</span>
+                                  <span style={{ color: "var(--error-color)" }}>{percents}%</span>
                                 )}
                               </p>
                             </TablePercents>
-                          </td>
+                          </TableData>
                           <TablePrice>
                             {currencyType(type)}{" "}
                             {formatNumber(
@@ -460,15 +476,21 @@ function Table({ data, fetchData }) {
                 boundaryCount={1}
                 sx={{
                   "& .MuiPaginationItem-root": {
-                    color: "#87ceeb",
-                    fontFamily: "Montserrat",
+                    color: "var(--accent-color)",
+                    fontFamily: "var(--font-family-primary)",
                     minWidth: { xs: 30, sm: 34 },
                     height: { xs: 30, sm: 34 },
+                    borderRadius: "8px",
+                    fontWeight: 600,
                   },
                   "& .Mui-selected": {
-                    backgroundColor: "#3a3b3f !important",
-                    color: "#fff !important",
+                    backgroundColor: "var(--accent-color) !important",
+                    color: "#000 !important",
+                    boxShadow: "var(--shadow-glow)",
                   },
+                  "& .MuiPaginationItem-root:hover": {
+                    backgroundColor: "rgba(252, 213, 53, 0.1)",
+                  }
                 }}
               />
             </Stack>

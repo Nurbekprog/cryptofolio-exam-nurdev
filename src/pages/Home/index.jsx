@@ -3,115 +3,113 @@ import Carousel from "../../components/Carousel"
 import carouselBg from "../../assets/images/bgImage.jpg"
 import Table from "../../components/Table"
 import Loader from "../../components/Loader"
-import { useContext, useState, useEffect, useCallback } from "react"
-import { DataContext } from "../../context/DataContext"
+import useCoinData from "../../hooks/useCoinData"
+import SEO from "../../components/SEO"
 
 const CarouselBackground = styled.div`
   position: relative;
   background-image: url(${carouselBg});
   background-size: cover;
   background-position: center;
-  min-height: 430px;
-  padding: 70px 0 45px;
+  min-height: 450px; /* Increased height for impact */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 0;
+  overflow: hidden;
 
+  /* Premium Overlay */
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
       180deg,
-      rgba(15, 16, 20, 0.5) 0%,
-      rgba(15, 16, 20, 0.88) 100%
+      rgba(11, 14, 17, 0.85) 0%,
+      rgba(11, 14, 17, 0.95) 100%
     );
+    z-index: 0;
+  }
+  
+  /* Accent Glow */
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 80%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(252, 213, 53, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
   }
 
   @media (max-width: 640px) {
-    min-height: 360px;
-    padding: 44px 0 24px;
-  }
-
-  @media (max-width: 420px) {
-    min-height: 330px;
-    padding: 34px 0 18px;
+    min-height: 400px;
+    padding: 40px 0;
   }
 `;
-const Title = styled.h2`
-  position: relative;
-  z-index: 1;
-  font-size: clamp(28px, 6vw, 62px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-  text-align: center;
-  color: #87ceeb;
-  margin-bottom: 12px;
-  padding: 0 16px;
 
-  @media (max-width: 420px) {
-    font-size: 26px;
-    line-height: 1.18;
+const ContentWrapper = styled.div`
+  position: relative;
+  z-index: 10;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+`;
+
+const Title = styled.h2`
+  font-family: var(--font-family-primary);
+  font-size: clamp(40px, 6vw, 72px); /* Larger, more impactful */
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+
+  span {
+    color: var(--accent-color);
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `;
 
 const Subtitle = styled.p`
-  position: relative;
-  z-index: 1;
-  font-size: clamp(13px, 2vw, 15px);
-  font-weight: 500;
+  font-family: var(--font-family-secondary);
+  font-size: clamp(16px, 2vw, 18px);
+  font-weight: 400;
   line-height: 1.6;
-  letter-spacing: 0.10px;
-  text-align: center;
-  color: #a9a9a9;
-  margin: 0 auto 28px;
-  max-width: 720px;
-  padding: 0 14px;
-
-  @media (max-width: 420px) {
-    margin-bottom: 18px;
-    line-height: 1.4;
-  }
+  color: var(--text-secondary);
+  margin: 0 auto 48px;
+  max-width: 600px;
 `;
 
 function Home() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [type] = useContext(DataContext);
-
-    const getData = useCallback(async (page = 1) => {
-        setLoading(true);
-        try {
-          const response = await fetch(
-            `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${type}&order=gecko_desc&per_page=10&page=${page}&sparkline=false&price_change_percentage=24h`
-          );
-          const data = await response.json();
-          setProducts(data);
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setLoading(false);
-        }
-      }, [type]);
-
-      useEffect(() => {
-        getData();
-      }, [getData]);
-
+    const { products, loading, fetchCoins, page } = useCoinData();
+    
    return (
     <>
-      {
-        loading ? (
-            <Loader/>
-        ) : (
-            <>
-            <CarouselBackground>
-                <Title>CRYPTOFOLIO WATCH LIST</Title>
-                <Subtitle>Get all the Info regarding your favorite Crypto Currency</Subtitle>
-                <Carousel data={products} />
-            </CarouselBackground>
-            <Table data={products} fetchData={getData}/>
-            </>
-        )
-      }
+      <SEO 
+        title="Cryptofolio - Premium Tracking" 
+        description="Real-time cryptocurrency tracking with professional insights." 
+      />
+      <CarouselBackground>
+        <ContentWrapper>
+          <Title>CRYPTOFOLIO <span>WATCH LIST</span></Title>
+          <Subtitle>Get comprehensive real-time information regarding your favorite cryptocurrencies.</Subtitle>
+          <Carousel data={products} />
+        </ContentWrapper>
+      </CarouselBackground>
+      
+      {loading && products.length === 0 ? (
+          <Loader/>
+      ) : (
+          <Table data={products} fetchData={fetchCoins} page={page} />
+      )}
     </>
   )
 }

@@ -10,6 +10,9 @@ import { Container, currencyType, formatNumber } from "../../utils";
 
 
 const Wrapper = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  
  .slick-prev,
  .slick-next {
     display: none !important;
@@ -34,56 +37,57 @@ const SliderItem = styled.div`
   backdrop-filter: blur(2px);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
   justify-content: center;
   text-align: center;
   cursor: pointer;
-  padding: 10px;
-  border: 1px solid rgba(135, 206, 235, 0.2);
+  padding: 16px;
+  border: 1px solid var(--border-color);
   transition: transform 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    transform: translateY(-3px);
-    border-color: rgba(135, 206, 235, 0.5);
+    transform: translateY(-4px);
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
 
   img{
-    margin: 6px auto;
+    margin-bottom: 8px;
   }
 
   @media (max-width: 420px) {
-    min-height: 186px;
+    min-height: 180px;
   }
 `;
 
 const SliderTitle = styled.h4`
-    font-family: Roboto, sans-serif;
+    font-family: var(--font-family-secondary);
     font-size: 16px;
-    font-weight: 400;
-    line-height: 18.75px;
+    font-weight: 500;
+    line-height: 1.2;
     text-align: center;
     text-transform: uppercase;
-	    span{
-        margin-left: 7px;
+    color: var(--text-primary);
+    
+    span{
+        margin-left: 8px;
         font-size: 14px;
         font-weight: 500;
-        line-height: 20px;
-        letter-spacing: 0.15px;
-	    }
+    }
 
     @media (max-width: 420px) {
       font-size: 14px;
-      line-height: 1.2;
     }
 `;
 
 const SliderPrice = styled.p`
-  font-family: Roboto, sans-serif;
+  font-family: var(--font-family-secondary);
   font-size: clamp(18px, 2.2vw, 22px);
-  font-weight:500;
+  font-weight: 600;
   line-height: 1.2;
   text-align: center;
+  color: var(--text-primary);
 `
 
 function Carousel({data}) {

@@ -1,20 +1,26 @@
 import { Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import About from './pages/About'
+import { lazy, Suspense } from 'react'
+import { HelmetProvider } from 'react-helmet-async'
 import Header from './components/Header'
-import PageNotFound from './pages/PageNotFound'
+import Loader from './components/Loader'
+
+const Home = lazy(() => import('./pages/Home'))
+const About = lazy(() => import('./pages/About'))
+const PageNotFound = lazy(() => import('./pages/PageNotFound'))
 
 function App() {
 
   return (
-    <>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/crypto/:id" element={<About />} />
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
-    </>
+    <HelmetProvider>
+      <Header />
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/crypto/:id" element={<About />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Suspense>
+    </HelmetProvider>
   )
 }
 
