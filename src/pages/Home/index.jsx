@@ -48,6 +48,11 @@ const CarouselBackground = styled.div`
     min-height: 400px;
     padding: 40px 0;
   }
+
+  @media (max-width: 360px) {
+    min-height: 350px;
+    padding: 30px 0;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -58,11 +63,15 @@ const ContentWrapper = styled.div`
   margin: 0 auto;
   padding: 0 24px;
   text-align: center;
+  
+  @media (max-width: 360px) {
+    padding: 0 16px;
+  }
 `;
 
 const Title = styled.h2`
   font-family: var(--font-family-primary);
-  font-size: clamp(40px, 6vw, 72px); /* Larger, more impactful */
+  font-size: clamp(32px, 6vw, 72px); /* Smaller min font for mobile */
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.5px;
@@ -76,16 +85,26 @@ const Title = styled.h2`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  
+  @media (max-width: 360px) {
+    font-size: 28px;
+    letter-spacing: -0.5px;
+  }
 `;
 
 const Subtitle = styled.p`
   font-family: var(--font-family-secondary);
-  font-size: clamp(16px, 2vw, 18px);
+  font-size: clamp(14px, 2vw, 18px);
   font-weight: 400;
   line-height: 1.6;
   color: var(--text-secondary);
   margin: 0 auto 48px;
   max-width: 600px;
+  
+  @media (max-width: 360px) {
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
 `;
 
 function Home() {

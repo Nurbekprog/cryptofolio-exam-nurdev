@@ -26,6 +26,10 @@ const Container = styled.div`
   @media (max-width: 768px) {
     padding: 16px;
   }
+  
+  @media (max-width: 360px) {
+    padding: 12px;
+  }
 `;
 
 const BackButton = styled.button`
@@ -79,6 +83,10 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
+  
+  @media (max-width: 360px) {
+    padding: 16px;
+  }
 `;
 
 const CoinHeader = styled.div`

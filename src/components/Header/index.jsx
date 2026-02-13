@@ -17,6 +17,7 @@ const HeaderContainer = styled.header`
   transition: all 0.3s ease;
 `;
 
+
 const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
@@ -27,11 +28,17 @@ const HeaderContent = styled.div`
   height: 80px;
 
   @media (max-width: 640px) {
-    flex-direction: row; /* Keep row even on mobile, maybe adjust scale */
     padding: 12px 16px;
     height: auto;
     flex-wrap: wrap;
     gap: 12px;
+  }
+  
+  @media (max-width: 360px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
   }
 `;
 
@@ -66,6 +73,11 @@ const ActionsGroup = styled.div`
 
   @media (max-width: 640px) {
     gap: 12px;
+  }
+  
+  @media (max-width: 360px) {
+    width: 100%;
+    justify-content: center;
   }
 `;
 

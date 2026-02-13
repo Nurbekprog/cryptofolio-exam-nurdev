@@ -188,6 +188,7 @@ const MobileList = styled.div`
   }
 `;
 
+
 const MobileCard = styled.div`
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -199,6 +200,10 @@ const MobileCard = styled.div`
   
   &:active {
     transform: scale(0.98);
+  }
+  
+  @media (max-width: 360px) {
+    padding: 16px;
   }
 `;
 
@@ -227,6 +232,12 @@ const MobileCoin = styled.div`
     font-size: 14px;
     color: var(--text-secondary);
   }
+  
+  @media (max-width: 360px) {
+    gap: 8px;
+    h3 { font-size: 16px; }
+    p { font-size: 13px; }
+  }
 `;
 
 const WatchIcon = styled.img`
@@ -246,6 +257,10 @@ const MobileGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
+  
+  @media (max-width: 360px) {
+    gap: 8px;
+  }
 `;
 
 const MobileCell = styled.div`
